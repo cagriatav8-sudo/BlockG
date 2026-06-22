@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>BlockG Studios - Rank Başvuru</title>
+    <style>
+        body { background: #0a0a0a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+        
+        /* Animasyon Bölümü */
+        #intro { position: absolute; text-align: center; animation: hideIntro 3s forwards; }
+        .logo-g { color: #8a2be2; font-size: 120px; font-weight: bold; }
+        @keyframes hideIntro { 0% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
+
+        /* Form Bölümü */
+        #main-ui { display: none; animation: fadeIn 1s forwards; text-align: center; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        input { background: #1a1a1a; border: 2px solid #8a2be2; color: white; padding: 15px; margin: 10px; border-radius: 10px; width: 250px; }
+        button { background: #8a2be2; color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div id="intro">
+        <div class="logo-g">G</div>
+        <script>setTimeout(() => document.querySelector('.logo-g').innerText = "BlockG", 1500);</script>
+    </div>
+
+    <div id="main-ui">
+        <h1>BlockG Rank Başvuru</h1>
+        <input type="text" id="username" placeholder="Minecraft Kullanıcı Adı"><br>
+        <input type="password" id="password" placeholder="Şifre"><br>
+        <button onclick="applyRank()">Başvuruyu Gönder</button>
+    </div>
+
+    <script>
+        setTimeout(() => document.getElementById('main-ui').style.display = 'block', 3000);
+
+        function applyRank() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            let rank = "";
+
+            if (pass === "gl54") rank = "Admin";
+            else if (pass === "glB1") rank = "VIP+";
+            else if (pass === "fgr4") rank = "VIP";
+            else if (pass === "ed4r") rank = "Kıdemli Üye";
+
+            if (rank !== "") {
+                const body = `Sayın BlockG studios,%0A%0AŞifre: true;%0AAlınan Rütbe: ${rank};%0AKullanıcı Adı: ${user}%0A%0AKontrol en az 15dk da en uzun 3 günde olacaktır.%0ADaha hızlı olması amacıyla bize Whatsapp.in den yazabilirsiniz.`;
+                window.location.href = `mailto:cagriatav1@gmail.com?subject=Rank Başvuru (${rank})&body=${body}`;
+            } else {
+                alert("Şifre Yanlış!");
+            }
+        }
+    </script>
+</body>
+</html>
