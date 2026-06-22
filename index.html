@@ -2,56 +2,74 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>BlockG Studios - Rank Başvuru</title>
+    <title>BlockG Studios - Panel</title>
     <style>
-        body { background: #0a0a0a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
-        
-        /* Animasyon Bölümü */
-        #intro { position: absolute; text-align: center; animation: hideIntro 3s forwards; }
-        .logo-g { color: #8a2be2; font-size: 120px; font-weight: bold; }
-        @keyframes hideIntro { 0% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
-
-        /* Form Bölümü */
-        #main-ui { display: none; animation: fadeIn 1s forwards; text-align: center; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
-        input { background: #1a1a1a; border: 2px solid #8a2be2; color: white; padding: 15px; margin: 10px; border-radius: 10px; width: 250px; }
-        button { background: #8a2be2; color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-weight: bold; }
+        body { background: #0a0a0a; color: white; font-family: sans-serif; text-align: center; margin: 0; }
+        .tab { display: none; padding: 20px; }
+        .active { display: block; }
+        input, textarea { background: #1a1a1a; border: 2px solid #8a2be2; color: white; padding: 10px; margin: 5px; border-radius: 5px; width: 80%; }
+        button { background: #8a2be2; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px; }
+        #profile { margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
     </style>
 </head>
 <body>
 
-    <div id="intro">
-        <div class="logo-g">G</div>
-        <script>setTimeout(() => document.querySelector('.logo-g').innerText = "BlockG", 1500);</script>
+    <div id="profile">
+        <div id="user-info">Giriş Yapılmadı</div>
     </div>
 
-    <div id="main-ui">
-        <h1>BlockG Rank Başvuru</h1>
-        <input type="text" id="username" placeholder="Minecraft Kullanıcı Adı"><br>
-        <input type="password" id="password" placeholder="Şifre"><br>
-        <button onclick="applyRank()">Başvuruyu Gönder</button>
+    <nav>
+        <button onclick="showTab('home')">Giriş/Başvuru</button>
+        <button onclick="showTab('ban')">Banlananlar</button>
+        <button onclick="showTab('report')">Şikayet</button>
+    </nav>
+
+    <div id="home" class="tab active">
+        <input type="text" id="username" placeholder="Minecraft Adı">
+        <input type="password" id="pass" placeholder="Şifre (VIP/Admin)">
+        <button onclick="login()">Giriş Yap</button>
+    </div>
+
+    <div id="ban" class="tab">
+        <h2>Banlanan Oyuncular</h2>
+        <p>Şu an banlı kimse yok.</p>
+    </div>
+
+    <div id="report" class="tab">
+        <h2>Şikayet Et</h2>
+        <textarea id="reportText" placeholder="Kimi ve neden şikayet ediyorsun?"></textarea><br>
+        <button onclick="sendReport()">Şikayeti Gönder</button>
     </div>
 
     <script>
-        setTimeout(() => document.getElementById('main-ui').style.display = 'block', 3000);
-
-        function applyRank() {
+        // Giriş Yapma
+        function login() {
             const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
-            let rank = "";
+            localStorage.setItem('blockg_user', user);
+            // Minecraft kafa API'si
+            document.getElementById('user-info').innerHTML = 
+                `<img src="https://minotar.net/avatar/${user}/50" style="border-radius:5px;"> <br> Hoş geldin, ${user}`;
+        }
 
-            if (pass === "gl54") rank = "Admin";
-            else if (pass === "glB1") rank = "VIP+";
-            else if (pass === "fgr4") rank = "VIP";
-            else if (pass === "ed4r") rank = "Kıdemli Üye";
-
-            if (rank !== "") {
-                const body = `Sayın BlockG studios,%0A%0AŞifre: true;%0AAlınan Rütbe: ${rank};%0AKullanıcı Adı: ${user}%0A%0AKontrol en az 15dk da en uzun 3 günde olacaktır.%0ADaha hızlı olması amacıyla bize Whatsapp.in den yazabilirsiniz.`;
-                window.location.href = `mailto:cagriatav1@gmail.com?subject=Rank Başvuru (${rank})&body=${body}`;
-            } else {
-                alert("Şifre Yanlış!");
+        // Sayfa yüklendiğinde eski girişi kontrol et
+        window.onload = () => {
+            const savedUser = localStorage.getItem('blockg_user');
+            if(savedUser) {
+                document.getElementById('user-info').innerHTML = 
+                    `<img src="https://minotar.net/avatar/${savedUser}/50" style="border-radius:5px;"> <br> Hoş geldin, ${savedUser}`;
             }
+        };
+
+        // Sekme Değiştirme
+        function showTab(id) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        // Şikayet Gönder
+        function sendReport() {
+            const text = document.getElementById('reportText').value;
+            window.location.href = `mailto:cagriatav1@gmail.com?subject=Sikayet&body=${text}`;
         }
     </script>
 </body>
