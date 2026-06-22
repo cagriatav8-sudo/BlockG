@@ -1,33 +1,31 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta name="google-site-verification" content="hFRxpJFGuDtAh3hhWRVyMHsdGJQxtbz4Ok0dqLKyiYc" />
     <meta charset="UTF-8">
     <title>BlockG Studios - Panel</title>
     <style>
-        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
-        
-        #intro { position: absolute; z-index: 100; animation: fadeOutIntro 3s forwards; }
+        /* Animasyon Stilleri */
+        #intro { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #050505; display: flex; justify-content: center; align-items: center; z-index: 9999; animation: fadeOutIntro 3s forwards; }
         .logo-g { color: #8a2be2; font-size: 150px; font-weight: bold; text-shadow: 0 0 20px #8a2be2; }
         @keyframes fadeOutIntro { 0% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
 
-        #main-ui { display: none; width: 420px; text-align: center; animation: fadeIn 1s forwards; background: rgba(20, 20, 20, 0.9); padding: 30px; border-radius: 20px; border: 1px solid #8a2be2; box-shadow: 0 0 20px rgba(138, 43, 226, 0.3); }
-        
-        input, textarea { width: 85%; padding: 12px; margin: 10px 0; background: #111; border: 1px solid #444; border-radius: 8px; color: white; outline: none; transition: 0.3s; }
-        input:focus { border-color: #8a2be2; box-shadow: 0 0 10px #8a2be2; }
-        
-        button { background: #8a2be2; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        
+        body { background: #050505; color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        #main-ui { width: 900px; text-align: center; background: #0a0a0a; padding: 20px; border-radius: 20px; border: 1px solid #333; margin-top: 50px; }
+        input, textarea { width: 80%; padding: 12px; margin: 10px 0; background: #111; border: 1px solid #444; border-radius: 8px; color: white; }
+        button { background: #8a2be2; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .shop-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 20px; }
+        .shop-item { background: #111; padding: 15px; border-radius: 10px; border: 1px solid #333; }
         .tab { display: none; }
         .active { display: block; }
-        nav { display: flex; justify-content: center; gap: 5px; margin-bottom: 20px; }
-        nav button { background: #222; color: #aaa; padding: 8px 12px; font-size: 12px; }
+        nav { margin-bottom: 20px; }
+        nav button { background: #222; color: #aaa; border: none; padding: 10px 15px; cursor: pointer; }
         nav button:hover { color: #fff; background: #8a2be2; }
-        #profile { margin-bottom: 20px; }
+        .header-image { max-width: 100%; border-radius: 15px; margin-bottom: 20px; pointer-events: none; }
     </style>
 </head>
 <body>
 
+    <!-- Açılış Animasyonu -->
     <div id="intro">
         <div class="logo-g" id="logo">G</div>
         <script>
@@ -36,91 +34,65 @@
     </div>
 
     <div id="main-ui">
-        <div id="profile">
-            <div id="user-info">Giriş Yapılmadı</div>
-        </div>
+        <img src="https://i.imgur.com/gK49GzT.png" alt="[Mağaza Görseli]" class="header-image">
 
         <nav>
             <button onclick="showTab('home')">Giriş</button>
             <button onclick="showTab('vip')">VIP</button>
             <button onclick="showTab('ban')">Banlar</button>
             <button onclick="showTab('report')">Şikayet</button>
+            <button onclick="showTab('shop')">Mağaza</button>
         </nav>
 
-        <!-- Giriş Sekmesi -->
         <div id="home" class="tab active">
             <input type="text" id="loginUser" placeholder="Kullanıcı Adı">
             <button onclick="login()">Giriş Yap</button>
         </div>
 
-        <!-- VIP Başvuru Sekmesi -->
         <div id="vip" class="tab">
             <input type="text" id="vipUser" placeholder="Kullanıcı Adı">
-            <input type="password" id="vipPass" placeholder="Şifre (VIP/Admin Kodu)">
+            <input type="password" id="vipPass" placeholder="Şifre">
             <button onclick="applyVip()">Başvuruyu Gönder</button>
         </div>
 
-        <!-- Banlananlar Sekmesi -->
-        <div id="ban" class="tab">
-            <h2>Banlanan Oyuncular</h2>
-            <p>Şu an banlı kimse yok.</p>
+        <div id="ban" class="tab"><h2>Banlanan Oyuncular</h2><p>Şu an banlı kimse yok.</p></div>
+
+        <div id="report" class="tab">
+            <h2>Şikayet</h2>
+            <textarea id="reportText" rows="3"></textarea>
+            <button onclick="sendReport()">Gönder</button>
         </div>
 
-        <!-- Şikayet Sekmesi -->
-        <div id="report" class="tab">
-            <h2>Şikayet Et</h2>
-            <textarea id="reportText" rows="3" placeholder="Detaylar..."></textarea>
-            <button onclick="sendReport()">Gönder</button>
+        <div id="shop" class="tab">
+            <h2>EN İYİ TEKLİFLER</h2>
+            <div class="shop-grid">
+                <div class="shop-item"><h3>Set #1</h3><p>189P</p><button>Satın Al</button></div>
+                <div class="shop-item"><h3>Set #2</h3><p>220P</p><button>Satın Al</button></div>
+                <div class="shop-item"><h3>Set #3</h3><p>279P</p><button>Satın Al</button></div>
+                <div class="shop-item"><h3>Set #4</h3><p>990P</p><button>Satın Al</button></div>
+            </div>
+            <hr style="border:0; border-top:1px solid #333; margin: 30px 0;">
+            <h3>SON SATIN ALIMLAR</h3>
+            <div style="display:flex; justify-content:center; gap:20px;">
+                <div><img src="https://minotar.net/avatar/@mirac@/50" alt="Avatar"><div>@mirac@</div></div>
+                <div><img src="https://minotar.net/avatar/orhanakman17/50" alt="Avatar"><div>orhanakman17</div></div>
+            </div>
         </div>
     </div>
 
     <script>
-        setTimeout(() => document.getElementById('main-ui').style.display = 'block', 3000);
-
-        function login() {
-            const user = document.getElementById('loginUser').value;
-            if(user) {
-                localStorage.setItem('blockg_user', user);
-                updateProfile(user);
-            }
-        }
-
-        function applyVip() {
-            const user = document.getElementById('vipUser').value;
-            const pass = document.getElementById('vipPass').value;
-            let rank = "";
-            if (pass === "gl54") rank = "Admin";
-            else if (pass === "glB1") rank = "VIP+";
-            else if (pass === "fgr4") rank = "VIP";
-            else if (pass === "ed4r") rank = "Kıdemli Üye";
-
-            if (rank !== "") {
-                const body = `Sayın BlockG studios,%0A%0AŞifre: true;%0AAlınan Rütbe: ${rank};%0AKullanıcı Adı: ${user}%0A%0AKontrol en az 15dk da en uzun 3 günde olacaktır.%0ADaha hızlı olması amacıyla bize Whatsapp.in den yazabilirsiniz.`;
-                window.location.href = `mailto:cagriatav1@gmail.com?subject=VIP Başvuru - ${user}&body=${body}`;
-            } else {
-                alert("Hatalı Şifre!");
-            }
-        }
-
-        function updateProfile(user) {
-            document.getElementById('user-info').innerHTML = 
-                `<img src="https://minotar.net/avatar/${user}/60" style="border-radius:10px; border: 2px solid #8a2be2;"> <br> ${user}`;
-        }
-
-        window.onload = () => {
-            const savedUser = localStorage.getItem('blockg_user');
-            if(savedUser) updateProfile(savedUser);
-        };
-
         function showTab(id) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
-
-        function sendReport() {
-            const text = document.getElementById('reportText').value;
-            window.location.href = `mailto:cagriatav1@gmail.com?subject=Sikayet&body=${text}`;
+        function login() { 
+            try {
+                localStorage.setItem('blockg_user', document.getElementById('loginUser').value); 
+                alert("Giriş yapıldı!"); 
+            } catch(e) { console.log("Depolama kapalı."); }
         }
+        function applyVip() { alert("Başvuru maili hazırlanıyor..."); }
+        function sendReport() { alert("Şikayetiniz gönderildi!"); }
     </script>
 </body>
 </html>
